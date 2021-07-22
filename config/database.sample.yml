@@ -1,0 +1,19 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username:
+  password:
+  host: localhost
+
+development:
+  <<: *default
+  database: Rails_QNA_development
+
+test:
+  <<: *default
+  database: Rails_QNA_test
+
+production:
+  <<: *default
+  database: Rails_QNA_production
