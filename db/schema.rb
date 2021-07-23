@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2021_07_22_223007) do
 
   create_table "answers", force: :cascade do |t|
     t.text "body", null: false
-    t.bigint "question_id"
+    t.bigint "question_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["question_id"], name: "index_answers_on_question_id"
