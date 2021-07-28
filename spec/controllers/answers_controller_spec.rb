@@ -20,25 +20,28 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
+    let(:post_create) { post :create, params: { question_id: question, answer: answer_params } }
     context 'with valid attributes' do
+      let(:answer_params) { attributes_for(:answer) }
       it 'saves a new answer in the database' do
         expect { post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to change(question.answers, :count).by(1)
       end
 
       it 'redirects to related question show view' do
-        post :create, params: { question_id: question, answer: attributes_for(:answer) }
+        post_create
 
         expect(response).to redirect_to question
       end
     end
 
     context 'with invalid attributes' do
+      let(:answer_params) { attributes_for(:answer, :invalid) }
       it 'does not save the question' do
         expect { post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) } }.to_not change(Answer, :count)
       end
 
       it 're-renders new view' do
-        post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }
+        post_create
 
         expect(response).to render_template :new
       end
