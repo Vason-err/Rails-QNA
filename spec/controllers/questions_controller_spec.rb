@@ -23,7 +23,7 @@ RSpec.describe QuestionsController, type: :controller do
     describe 'GET #new' do
       before { get :new }
 
-      it 'assigns a new Question to @quetstion' do
+      it 'assigns a new Question to @question' do
         expect(assigns(:question)).to be_a_new(Question)
       end
 
@@ -72,7 +72,8 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'redirects to questions' do
-        is_expected.to redirect_to questions_path
+        delete_destroy
+        expect(response).to redirect_to questions_path
       end
 
       context 'when the user is not the author' do
@@ -83,7 +84,8 @@ RSpec.describe QuestionsController, type: :controller do
         end
 
         it 'redirects to question' do
-          is_expected.to redirect_to question_path(question)
+          delete_destroy
+          expect(response).to redirect_to question_path(question)
         end
       end
     end

@@ -19,6 +19,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'redirects to related question show view' do
+        post_create
         expect(response).to redirect_to question
       end
     end
@@ -30,7 +31,8 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'renders question show view' do
-        is_expected.to render_template 'questions/show'
+        post_create
+        expect(response).to render_template 'questions/show'
       end
     end
   end
@@ -45,7 +47,8 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     it 'redirects to question' do
-      is_expected.to redirect_to question_path(question)
+      delete_destroy
+      expect(response).to redirect_to question_path(question)
     end
 
     context 'when the user is not the author' do
@@ -56,7 +59,8 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'redirects to question' do
-        is_expected.to redirect_to question_path(question)
+        delete_destroy
+        expect(response).to redirect_to question_path(question)
       end
     end
   end
