@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
-  resources :questions, only: [:show, :new, :create] do
-    resources :answers, only: [:new, :create], shallow: true
+  root to: "home#index"
+
+  devise_for :users, controllers: {
+    sessions: 'user/sessions'
+  }
+
+  resources :questions, only: [:index, :show, :new, :create, :destroy] do
+    resources :answers, only: [:create, :destroy], shallow: true
   end
 end
