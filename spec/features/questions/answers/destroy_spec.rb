@@ -16,7 +16,7 @@ feature 'user can delete answer' do
   describe 'authenticated user' do
     background { login(user) }
 
-    scenario 'tries to delete answer' do
+    scenario 'tries to delete answer', js: true do
       visit question_path(question)
 
       expect(page).to have_content answer.body

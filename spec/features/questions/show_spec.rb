@@ -29,4 +29,18 @@ feature 'user can show question and answers', %q{
   describe 'unauthenticated user' do
     it_behaves_like 'question and answers'
   end
+
+  context 'when question with best answer' do
+    given(:question_with_best_answer) { create(:question, :with_best_answer) }
+
+    scenario 'best answer show first' do
+      visit question_path(question_with_best_answer)
+
+      within('.answers') do
+        within first('.answer') do
+          expect(page).to have_content question_with_best_answer.best_answer.body
+        end
+      end
+    end
+  end
 end
