@@ -18,24 +18,6 @@ RSpec.describe Answer, type: :model do
       end
     end
 
-    describe '#clear_best_mark' do
-      subject { answer.clear_best_mark }
-
-      let(:answer) { create(:answer, :best) }
-
-      it do
-        expect { subject }.to change { question.reload.best_answer_id }.from(answer.id).to(nil)
-      end
-
-      context 'when answer is not best' do
-        let(:answer) { create(:answer) }
-
-        it do
-          expect { subject }.not_to change { question.reload.best_answer_id }
-        end
-      end
-    end
-
     describe '#best?' do
       it { expect(answer).not_to be_best }
 
