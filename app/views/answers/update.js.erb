@@ -1,0 +1,5 @@
+$("#answer-id-<%= @answer.id %> .edit-answer-form .answer-errors").html("<%= render 'shared/errors', resource: @answer %>");
+
+<% if @answer.errors.empty? %>
+$("#answer-id-<%= @answer.id %>").replaceWith("<%= j render @answer, best: @answer.best? %>");
+<% end %>

@@ -1,0 +1,16 @@
+- if answer.persisted?
+  .answer id="answer-id-#{answer.id}" class=("best" if local_assigns[:best])
+    p = answer.body
+
+    - if user_signed_in?
+      - if current_user.author_of?(answer.question)
+        p.mark-as-best = link_to "Mark as best", mark_as_best_answer_path(answer), method: :post, remote: true
+
+      - if current_user.author_of?(answer)
+        p = link_to "Edit answer", "#", class: "edit-answer-link", data: { answer_id: answer.id }
+
+        .edit-answer-form
+          .answer-errors
+          = render "answers/edit_form", answer: answer
+
+        p = link_to "Delete answer", answer_path(answer), method: :delete, remote: true
