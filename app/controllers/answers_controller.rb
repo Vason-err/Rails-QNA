@@ -1,27 +1,43 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, only: [:create, :destroy]
+  before_action :authenticate_user!
   before_action :find_question, only: [:create]
-  before_action :find_answer, only: [:destroy]
+  before_action :find_answer, only: [:update, :destroy, :mark_as_best]
 
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
 
     if @answer.save
-      redirect_to @question, notice: "The answer has been successfully created"
+      @notice = "The answer has been successfully created"
     else
-      render 'questions/show'
+      @alert = "The answer has not been created"
+    end
+  end
+
+  def update
+    if current_user.author_of?(@answer)
+      if @answer.update(answer_params)
+        @notice = "The answer has been successfully updated"
+      end
+    else
+      @alert = "You can't update the answer, because you aren't its author"
     end
   end
 
   def destroy
-    question = @answer.question
-
     if current_user.author_of?(@answer)
       @answer.destroy
-      redirect_to question, notice: "The answer has been successfully deleted"
+      @notice = "The answer has been successfully deleted"
     else
-      redirect_to question, alert: "You can't delete the answer, because you aren't its author"
+      @alert = "You can't delete the answer, because you aren't its author"
+    end
+  end
+
+  def mark_as_best
+    if current_user.author_of?(@answer.question)
+      @answer.mark_as_best
+    else
+      @alert = "You can't mark the answer, because you aren't author the question"
     end
   end
 

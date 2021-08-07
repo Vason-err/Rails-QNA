@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :destroy]
-  before_action :find_question, only: [:show, :destroy]
+  before_action :authenticate_user!, only: [:new, :create, :update, :destroy]
+  before_action :find_question, only: [:show, :update, :destroy]
 
   def index
     @questions = Question.all
@@ -21,6 +21,16 @@ class QuestionsController < ApplicationController
       redirect_to @question, notice: "The question has been successfully created"
     else
       render :new
+    end
+  end
+
+  def update
+    if current_user.author_of?(@question)
+      if @question.update(question_params)
+        @notice = "The question has been successfully updated"
+      end
+    else
+      @alert = "You can't update the question, because you aren't its author"
     end
   end
 

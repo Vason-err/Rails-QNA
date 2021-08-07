@@ -5,7 +5,11 @@ Rails.application.routes.draw do
     sessions: 'user/sessions'
   }
 
-  resources :questions, only: [:index, :show, :new, :create, :destroy] do
-    resources :answers, only: [:create, :destroy], shallow: true
+  resources :questions, except: [:edit] do
+    resources :answers, only: [:create, :update, :destroy], shallow: true do
+      member do
+        post :mark_as_best
+      end
+    end
   end
 end
