@@ -8,10 +8,10 @@ import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "jquery"
-import "packs/answers"
-import "packs/questions"
+import "./answers"
+import "./questions"
 
-let jQuery = require("jquery");
+const jQuery = require("jquery");
 // import jQuery from "jquery";
 global.$ = global.jQuery = jQuery;
 window.$ = window.jQuery = jQuery;

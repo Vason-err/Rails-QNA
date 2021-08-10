@@ -25,13 +25,8 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if current_user.author_of?(@question)
-      if @question.update(question_params)
-        @notice = "The question has been successfully updated"
-      end
-    else
-      @alert = "You can't update the question, because you aren't its author"
-    end
+    render status: :forbidden if !(current_user.author_of?(@question))
+    @notice = "The question has been successfully updated" if @question.update(question_params)
   end
 
   def destroy

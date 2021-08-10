@@ -15,13 +15,8 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if current_user.author_of?(@answer)
-      if @answer.update(answer_params)
-        @notice = "The answer has been successfully updated"
-      end
-    else
-      @alert = "You can't update the answer, because you aren't its author"
-    end
+    render status: :forbidden if !(current_user.author_of?(@answer))
+    @notice = "The answer has been successfully updated" if @answer.update(answer_params)
   end
 
   def destroy

@@ -1,4 +1,4 @@
-$(".edit-question-form .question-errors").html("<%= render "shared/errors", resource: @question %>");
+$(".edit-question-form .question-errors").html("<%= render 'shared/errors', resource: @question %>");
 
 <% if @question.errors.empty? %>
 $(".question .title").html("<%= j @question.title %>");

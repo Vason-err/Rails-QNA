@@ -95,6 +95,8 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       context 'when the user is not the author' do
+        let!(:question) { create(:question) }
+
         it 'does not update the answer' do
           expect { patch_update }.not_to change { question.body }
         end
