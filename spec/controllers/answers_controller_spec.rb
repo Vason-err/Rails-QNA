@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question) }
+  let!(:other_answer) { create(:answer) }
 
   before { login(user) }
 
@@ -47,8 +48,9 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'when the user is not the author' do
-      it 'does not update the answer' do
-        expect { patch_update }.not_to change { answer.body }
+      it 'returns forbidden' do
+        patch :update, params: {id: other_answer, format: :js}
+        expect(response).to be_forbidden
       end
     end
   end
@@ -68,12 +70,17 @@ RSpec.describe AnswersController, type: :controller do
       it 'should not delete answer' do
         expect { delete_destroy }.not_to change(question.answers, :count)
       end
-    end
 
+      it 'returns forbidden' do
+        delete_destroy
+        expect(response).to be_forbidden
+      end
+    end
   end
 
   describe 'POST #mark_as_best' do
-    let(:post_mark) { post :mark_as_best, params: { id: answer.id }, format: :js }
+    let(:post_mark) { post :mark_as_best, params: { id: answer_id }, format: :js }
+    let(:answer_id) { answer.id }
 
     let(:question) { create(:question, user: user) }
     let!(:answer) { create(:answer, question: question) }
@@ -83,10 +90,15 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'when the user is not the question author' do
-      let(:question) { create(:question) }
+      let(:answer_id) { other_answer }
 
       it 'should not marks answer as best' do
-        expect { post_mark }.not_to change { question.reload.best_answer_id }
+        expect { post_mark}.not_to change { question.reload.best_answer_id }
+      end
+
+      it 'returns forbidden' do
+        post_mark
+        expect(response).to be_forbidden
       end
     end
   end

@@ -100,6 +100,11 @@ RSpec.describe QuestionsController, type: :controller do
         it 'does not update the answer' do
           expect { patch_update }.not_to change { question.body }
         end
+
+        it 'forbidden to question' do
+          patch_update
+          expect(patch_update).to be_forbidden
+        end
       end
     end
 
@@ -125,9 +130,9 @@ RSpec.describe QuestionsController, type: :controller do
           expect { delete_destroy }.to change(Question, :count).by(0)
         end
 
-        it 'redirects to question' do
+        it 'forbidden to question' do
           delete_destroy
-          expect(response).to redirect_to question_path(question)
+          expect(response).to be_forbidden
         end
       end
     end
