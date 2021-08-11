@@ -1,7 +1,12 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_question, only: [:create]
+  before_action :find_question, only: [:create, :index]
   before_action :find_answer, only: [:update, :destroy, :mark_as_best]
+  before_action :check_answer_author, only: [:update, :destroy]
+
+  def index
+    @answers = @question.answers
+  end
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -15,25 +20,17 @@ class AnswersController < ApplicationController
   end
 
   def update
-    render status: :forbidden if !(current_user.author_of?(@answer))
     @notice = "The answer has been successfully updated" if @answer.update(answer_params)
   end
 
   def destroy
-    if current_user.author_of?(@answer)
-      @answer.destroy
-      @notice = "The answer has been successfully deleted"
-    else
-      @alert = "You can't delete the answer, because you aren't its author"
-    end
+    @answer.destroy
+    @notice = "The answer has been successfully deleted"
   end
 
   def mark_as_best
-    if current_user.author_of?(@answer.question)
-      @answer.mark_as_best
-    else
-      @alert = "You can't mark the answer, because you aren't author the question"
-    end
+    render status: :forbidden unless current_user.author_of?(@answer.question)
+    @answer.mark_as_best
   end
 
   private
@@ -48,5 +45,11 @@ class AnswersController < ApplicationController
 
   def find_answer
     @answer = Answer.find(params[:id])
+  end
+
+  def check_answer_author
+    unless current_user.author_of?(@answer)
+      head(:forbidden)
+    end
   end
 end

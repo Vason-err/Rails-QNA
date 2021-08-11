@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :update, :destroy]
   before_action :find_question, only: [:show, :update, :destroy]
+  before_action :check_question_author, only: [:update, :destroy]
 
   def index
     @questions = Question.all
@@ -25,17 +26,12 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    render status: :forbidden if !(current_user.author_of?(@question))
     @notice = "The question has been successfully updated" if @question.update(question_params)
   end
 
   def destroy
-    if current_user.author_of?(@question)
       @question.destroy
       redirect_to questions_path, notice: "The question has been successfully deleted"
-    else
-      redirect_to @question, alert: "You can't delete the question, because you aren't its author"
-    end
   end
 
   private
@@ -46,5 +42,11 @@ class QuestionsController < ApplicationController
 
   def find_question
     @question = Question.find(params[:id])
+  end
+
+  def check_question_author
+    unless current_user.author_of?(@question)
+      head(:forbidden)
+    end
   end
 end
