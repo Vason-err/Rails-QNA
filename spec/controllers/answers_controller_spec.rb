@@ -86,14 +86,18 @@ RSpec.describe AnswersController, type: :controller do
     let!(:answer) { create(:answer, question: question) }
 
     it 'should marks answer as best' do
-      expect { post_mark }.to change { question.reload.best_answer_id }.from(nil).to(answer.id)
+      post_mark
+      answer.reload
+      expect(answer.best).to eq true
     end
 
     context 'when the user is not the question author' do
       let(:answer_id) { other_answer }
 
       it 'should not marks answer as best' do
-        expect { post_mark}.not_to change { question.reload.best_answer_id }
+        post_mark
+        answer.reload
+        expect(answer.best).to_not eq true
       end
 
       it 'returns forbidden' do

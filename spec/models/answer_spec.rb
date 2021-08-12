@@ -10,22 +10,17 @@ RSpec.describe Answer, type: :model do
     let(:answer) { create(:answer) }
     let(:question) { answer.question }
 
-    describe '#mark_as_best' do
-      subject { answer.mark_as_best }
-
-      it do
-        expect { subject }.to change { question.reload.best_answer_id }.from(nil).to(answer.id)
-      end
+    it 'select this answer best' do
+      expect(answer).to_not be_best
+      answer.mark_as_best
+      expect(answer).to be_best
     end
 
-    describe '#best?' do
-      it { expect(answer).not_to be_best }
-
-      context 'when best' do
-        let(:answer) { create(:answer, :best) }
-
-        it { expect(answer).to be_best }
-      end
+    it 'deselect other answers' do
+      best_answer = create(:answer, question: question, best: true)
+      answer.mark_as_best
+      best_answer.reload
+      expect(best_answer).to_not be_best
     end
   end
 end

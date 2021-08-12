@@ -38,7 +38,7 @@ feature 'user can show question and answers', %q{
 
       within('.answers') do
         within first('.answer') do
-          expect(page).to have_content question_with_best_answer.best_answer.body
+          expect(page).to have_content question_with_best_answer.answers.first.body
         end
       end
     end

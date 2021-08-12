@@ -18,8 +18,9 @@ feature 'user can mark answer as best', %q{
       within '.answers' do
         within first('.answer') do
           click_on 'Mark as best'
+          wait_for_ajax
 
-          expect(page).not_to have_content 'Mark as best'
+          expect(page).not_to have_link 'Mark as best'
         end
 
         expect(page).to have_css '.best'
