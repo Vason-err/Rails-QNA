@@ -21,6 +21,4 @@ p = link_to "Questions", questions_path
 
 p Answers
 .answers
-  - if @question.best_answer_id
-    = render @question.best_answer, best: true
-  = render @question.answers_without_best
+  = render @question.answers

@@ -5,10 +5,9 @@ class Answer < ApplicationRecord
   validates :body, presence: true
 
   def mark_as_best
-    question.update(best_answer_id: id)
-  end
-
-  def best?
-    question.best_answer_id == id
+    Answer.transaction do
+      question.answers.update_all(best:false)
+      update!(best: true)
+    end
   end
 end

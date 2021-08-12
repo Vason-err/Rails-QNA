@@ -1,5 +1,5 @@
 - if answer.persisted?
-  .answer id="answer-id-#{answer.id}" class=("best" if local_assigns[:best])
+  .answer id="answer-id-#{answer.id}" class=("best" if answer.best)
     p = answer.body
 
     - if user_signed_in?
