@@ -6,21 +6,21 @@ RSpec.describe Answer, type: :model do
 
   it { should validate_presence_of(:body) }
 
-  describe 'best answer' do
-    let(:answer) { create(:answer) }
-    let(:question) { answer.question }
+  describe '#mark_as_best' do
+    let(:question_with_answers) { create(:question, :with_answers) }
+    let(:first_answer) { question_with_answers.answers.first }
+    let(:best_answer) { create(:answer, question: question_with_answers, best:true) }
 
     it 'select this answer best' do
-      expect(answer).to_not be_best
-      answer.mark_as_best
-      expect(answer).to be_best
+      expect { first_answer.mark_as_best }.to change { first_answer.best }.from(false).to(true)
     end
 
     it 'deselect other answers' do
-      best_answer = create(:answer, question: question, best: true)
-      answer.mark_as_best
+      best_answer
+      first_answer.mark_as_best
       best_answer.reload
       expect(best_answer).to_not be_best
+      expect(question_with_answers.answers.last).to_not be_best
     end
   end
 end

@@ -9,6 +9,12 @@ FactoryBot.define do
       title { nil }
     end
 
+    trait :with_answers do
+      after :create do |question|
+        create_list :answer, 2, question: question
+      end
+    end
+
     trait :with_best_answer do
       after :create do |question|
         create_list :answer, 3, question: question
