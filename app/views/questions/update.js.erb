@@ -1,0 +1,8 @@
+$(".edit-question-form .question-errors").html("<%= render 'shared/errors', resource: @question %>");
+
+<% if @question.errors.empty? %>
+$(".question .title").html("<%= j @question.title %>");
+$(".question .body").html("<%= j @question.body %>");
+$(".question .edit-question-link").removeClass("hidden");
+$("form#edit-question-form-<%= @question.id %>").addClass("hidden");
+<% end %>

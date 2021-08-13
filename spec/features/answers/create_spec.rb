@@ -7,7 +7,7 @@ feature 'user can create answer', %q{
 } do
   given!(:question) { create(:question) }
 
-  describe 'authenticated user' do
+  describe 'authenticated user', js: true do
     given(:user) { create(:user) }
 
     background { login(user) }
@@ -19,7 +19,11 @@ feature 'user can create answer', %q{
       click_on 'Answer'
 
       expect(page).to have_content 'The answer has been successfully created'
-      expect(page).to have_content 'Answer body'
+      within '.answers' do
+        expect(page).to have_content 'Answer body'
+        expect(page).to have_content 'Edit answer'
+        expect(page).to have_content 'Delete answer'
+      end
     end
 
     scenario 'tries to create invalid answer a question' do

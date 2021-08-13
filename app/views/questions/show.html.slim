@@ -1,21 +1,24 @@
 p = link_to "Questions", questions_path
 
-h1 = @question.title
-p = @question.body
+.question
+  h1.title = @question.title
+  p.body = @question.body
 
-- if user_signed_in?
-  - if current_user.author_of?(@question)
-    p = link_to "Delete question", question_path(@question), method: :delete
+  - if user_signed_in?
+    - if current_user.author_of?(@question)
+      p = link_to "Edit question", "#", class: "edit-question-link", data: {question_id: @question.id}
 
-  p New answer
-  = render '/shared/errors', resource: @answer
-  = render '/answers/form'
+      .edit-question-form
+        .question-errors
+        = render "/questions/edit_form"
+
+      p = link_to "Delete question", question_path(@question), method: :delete
+
+    p New answer
+    .new-answer-form
+      .answer-errors
+      = render "/answers/form"
 
 p Answers
-- if @question.answers.present?
-  - @question.answers.each do |answer|
-    - if answer.persisted?
-      p = answer.body
-
-      - if current_user&.author_of?(answer)
-        p = link_to "Delete answer", answer_path(answer), method: :delete
+.answers
+  = render @question.answers

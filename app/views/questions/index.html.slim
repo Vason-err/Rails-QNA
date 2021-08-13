@@ -2,7 +2,4 @@ h1 Questions
 
 p = link_to 'Ask question', new_question_path
 
-- if @questions.present?
-  - @questions.each do |question|
-    = link_to question.title, question_path(question)
-    br
+== render @questions

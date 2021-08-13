@@ -1,28 +1,36 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, only: [:create, :destroy]
-  before_action :find_question, only: [:create]
-  before_action :find_answer, only: [:destroy]
+  before_action :authenticate_user!
+  before_action :find_question, only: [:create, :index]
+  before_action :find_answer, only: [:update, :destroy, :mark_as_best]
+  before_action :check_answer_author, only: [:update, :destroy]
+
+  def index
+    @answers = @question.answers
+  end
 
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
 
     if @answer.save
-      redirect_to @question, notice: "The answer has been successfully created"
+      @notice = "The answer has been successfully created"
     else
-      render 'questions/show'
+      @alert = "The answer has not been created"
     end
   end
 
-  def destroy
-    question = @answer.question
+  def update
+    @notice = "The answer has been successfully updated" if @answer.update(answer_params)
+  end
 
-    if current_user.author_of?(@answer)
-      @answer.destroy
-      redirect_to question, notice: "The answer has been successfully deleted"
-    else
-      redirect_to question, alert: "You can't delete the answer, because you aren't its author"
-    end
+  def destroy
+    @answer.destroy
+    @notice = "The answer has been successfully deleted"
+  end
+
+  def mark_as_best
+    render status: :forbidden unless current_user.author_of?(@answer.question)
+    @answer.mark_as_best
   end
 
   private
@@ -37,5 +45,11 @@ class AnswersController < ApplicationController
 
   def find_answer
     @answer = Answer.find(params[:id])
+  end
+
+  def check_answer_author
+    unless current_user.author_of?(@answer)
+      head(:forbidden)
+    end
   end
 end

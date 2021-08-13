@@ -8,5 +8,11 @@ FactoryBot.define do
     trait :invalid do
       body { nil }
     end
+
+    trait :best do
+      after :create do |answer|
+        answer.mark_as_best
+      end
+    end
   end
 end
