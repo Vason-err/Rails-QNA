@@ -26,6 +26,20 @@ feature 'user can create answer', %q{
       end
     end
 
+    scenario 'tries to create answer with attached files' do
+      fill_in 'Body', with: 'Answer body'
+      attach_file 'File', [
+        "#{Rails.root}/spec/fixtures/files/text_test_file.txt",
+        "#{Rails.root}/spec/fixtures/files/image_test_file.jpeg",
+      ]
+      click_on 'Answer'
+
+      within '.answers' do
+        expect(page).to have_link 'text_test_file.txt'
+        expect(page).to have_link 'image_test_file.jpeg'
+      end
+    end
+
     scenario 'tries to create invalid answer a question' do
       click_on 'Answer'
 

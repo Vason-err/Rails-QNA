@@ -8,6 +8,10 @@ FactoryBot.define do
     trait :invalid do
       body { nil }
     end
+    
+    trait :with_file do
+      files { Rack::Test::UploadedFile.new("spec/fixtures/files/image_test_file.jpeg", "image/jpeg") }
+    end
 
     trait :best do
       after :create do |answer|

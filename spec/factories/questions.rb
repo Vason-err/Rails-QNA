@@ -9,6 +9,10 @@ FactoryBot.define do
       title { nil }
     end
 
+    trait :with_file do
+      files { Rack::Test::UploadedFile.new("spec/fixtures/files/image_test_file.jpeg", "image/jpeg") }
+    end
+
     trait :with_answers do
       after :create do |question|
         create_list :answer, 2, question: question
