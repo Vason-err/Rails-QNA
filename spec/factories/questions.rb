@@ -10,7 +10,7 @@ FactoryBot.define do
     end
 
     trait :with_file do
-      files { Rack::Test::UploadedFile.new("spec/fixtures/files/image_test_file.jpeg", "image/jpeg") }
+      files { fixture_file_upload("#{Rails.root}/spec/rails_helper.rb") }
     end
 
     trait :with_answers do

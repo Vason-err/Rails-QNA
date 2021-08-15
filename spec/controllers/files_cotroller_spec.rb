@@ -7,7 +7,7 @@ RSpec.describe FilesController, type: :controller do
   before { login(user) }
 
   describe 'DELETE #destroy' do
-    subject { delete :destroy, params: { id: question.files.first.id }, format: :js }
+    subject { delete :destroy, params: { id: question.files.first }, format: :js }
 
     it 'should delete file' do
       expect { subject }.to change(ActiveStorage::Attachment, :count).by(-1)
