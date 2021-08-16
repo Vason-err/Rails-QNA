@@ -3,11 +3,7 @@ class FilesController < ApplicationController
 
   def destroy
     @file = ActiveStorage::Attachment.find(params[:id])
-
-    if current_user.author_of?(@file.record)
-      @file.purge
-    else
-      @alert = "You can't delete the file, because you aren't its author"
-    end
+    head(:forbidden) unless current_user.author_of?(@file.record)
+    @file.purge
   end
 end
