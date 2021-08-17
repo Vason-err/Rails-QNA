@@ -10,7 +10,13 @@ FactoryBot.define do
     end
 
     trait :with_file do
-      files { fixture_file_upload("#{Rails.root}/spec/rails_helper.rb") }
+      after :create do |question|
+        question.files.attach(
+          io: File.open(Rails.root.join('spec', 'rails_helper.rb')),
+          filename: 'rails_helper.rb',
+          content_type: 'text/rb'
+        )
+      end
     end
 
     trait :with_answers do
