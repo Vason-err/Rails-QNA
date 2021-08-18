@@ -36,3 +36,5 @@ yarn-debug.log*
 .yarn-integrity
 /.idea
 /config/database.yml
+
+.DS_Store

@@ -28,6 +28,21 @@ feature 'user can edit his question', %q{
       expect(page).to have_content 'Edit question'
     end
 
+    scenario 'add files' do
+      click_on 'Edit question'
+
+      within '.edit-question-form' do
+        attach_file 'File', [
+          "#{Rails.root}/spec/fixtures/files/text_test_file.txt",
+          "#{Rails.root}/spec/fixtures/files/image_test_file.jpeg",
+        ]
+        click_on 'Save'
+      end
+
+      expect(page).to have_link 'text_test_file.txt'
+      expect(page).to have_link 'image_test_file.jpeg'
+    end
+
     scenario 'edits his question with errors' do
       click_on 'Edit question'
 

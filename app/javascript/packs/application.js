@@ -10,6 +10,7 @@ import "channels"
 import "jquery"
 import "./answers"
 import "./questions"
+import "./direct_uploads"
 
 const jQuery = require("jquery");
 // import jQuery from "jquery";

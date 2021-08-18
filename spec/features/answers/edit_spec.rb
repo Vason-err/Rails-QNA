@@ -31,6 +31,23 @@ feature 'user can edit his answer', %q{
       end
     end
 
+    scenario 'add files' do
+      click_on 'Edit answer'
+
+      within "#edit-answer-form-#{answer.id}" do
+        attach_file 'File', [
+          "#{Rails.root}/spec/fixtures/files/text_test_file.txt",
+          "#{Rails.root}/spec/fixtures/files/image_test_file.jpeg",
+        ]
+        click_on 'Save'
+      end
+
+      within "#answer-id-#{answer.id}" do
+        expect(page).to have_link 'text_test_file.txt'
+        expect(page).to have_link 'image_test_file.jpeg'
+      end
+    end
+
     scenario 'edits his answer with errors' do
       click_on 'Edit answer'
 

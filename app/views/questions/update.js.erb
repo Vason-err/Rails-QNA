@@ -3,6 +3,12 @@ $(".edit-question-form .question-errors").html("<%= render 'shared/errors', reso
 <% if @question.errors.empty? %>
 $(".question .title").html("<%= j @question.title %>");
 $(".question .body").html("<%= j @question.body %>");
+<% if @question.files.attached? %>
+  $(".question .files").html("");
+  <% @question.files.each do |file| %>
+    $(".question .files").append("<%= j render "files/file", file: file %>");
+  <% end %>
+<% end %>
 $(".question .edit-question-link").removeClass("hidden");
 $("form#edit-question-form-<%= @question.id %>").addClass("hidden");
 <% end %>

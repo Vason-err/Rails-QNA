@@ -4,6 +4,11 @@ p = link_to "Questions", questions_path
   h1.title = @question.title
   p.body = @question.body
 
+  .files
+    - if @question.files.attached?
+      - @question.files.each do |file|
+        = render "/files/file", file: file
+
   - if user_signed_in?
     - if current_user.author_of?(@question)
       p = link_to "Edit question", "#", class: "edit-question-link", data: {question_id: @question.id}
