@@ -6,6 +6,13 @@
       - answer.files.each do |file|
         = render "/files/file", file: file
 
+    - if answer&.links.present?
+      .links
+        p Links:
+        ul
+          - answer&.links.each do |link|
+            li = link_to link.name, link.url
+
     - if user_signed_in?
       - if current_user.author_of?(answer.question)
         p.mark-as-best = link_to 'Mark as best', mark_as_best_answer_path(answer), method: :post, remote: true
