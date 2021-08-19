@@ -9,12 +9,8 @@ p = link_to "Questions", questions_path
       - @question.files.each do |file|
         = render "/files/file", file: file
 
-  - if @question&.links.present?
-    .links
-      p Links:
-      ul
-        - @question&.links.each do |link|
-          li = link_to link.name, link.url
+  -if @question&.links.present?
+    = render 'links/index', resource: @question
 
   - if user_signed_in?
     - if current_user.author_of?(@question)

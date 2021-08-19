@@ -7,11 +7,7 @@
         = render "/files/file", file: file
 
     - if answer&.links.present?
-      .links
-        p Links:
-        ul
-          - answer&.links.each do |link|
-            li = link_to link.name, link.url
+      = render 'links/index', resource: answer
 
     - if user_signed_in?
       - if current_user.author_of?(answer.question)
