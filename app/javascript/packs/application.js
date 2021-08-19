@@ -11,6 +11,7 @@ import "jquery"
 import "./answers"
 import "./questions"
 import "./direct_uploads"
+import "@nathanvda/cocoon"
 
 const jQuery = require("jquery");
 // import jQuery from "jquery";
