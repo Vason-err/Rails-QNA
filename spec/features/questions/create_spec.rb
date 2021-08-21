@@ -36,6 +36,15 @@ feature 'user can create question', %q{
         expect(page).to have_link 'text_test_file.txt'
         expect(page).to have_link 'image_test_file.jpeg'
       end
+
+      scenario 'assigns an award for the best answer' do
+        fill_in 'Reward title', with: 'Test reward'
+        attach_file 'Reward file', "#{Rails.root}/spec/fixtures/files/thumb.png"
+        click_on 'Ask'
+
+        expect(page).to have_content 'Test reward'
+        expect(page).to have_link 'thumb.png'
+      end
     end
 
     context 'with invalid params' do
