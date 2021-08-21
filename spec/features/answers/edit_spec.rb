@@ -11,6 +11,8 @@ feature 'user can edit his answer', %q{
 
   describe 'authenticated user', js: true do
     background { login(user) }
+    given(:gist_url) { 'https://gist.github.com/Vason-err/ebf797de8d60c832da5a00023a9ea20f' }
+    given(:google_url) { 'https://www.google.com/' }
 
     background { visit question_path(question) }
 
@@ -45,6 +47,29 @@ feature 'user can edit his answer', %q{
       within "#answer-id-#{answer.id}" do
         expect(page).to have_link 'text_test_file.txt'
         expect(page).to have_link 'image_test_file.jpeg'
+      end
+    end
+
+    scenario 'can adds links' do
+      click_on 'Edit answer'
+
+      within "#edit-answer-form-#{answer.id}" do
+        click_on 'add link'
+        within '.nested-fields:last-of-type' do
+          fill_in 'Link name', with: 'Google'
+          fill_in 'Url', with: google_url
+        end
+        click_on 'add link'
+        within '.nested-fields:last-of-type' do
+          fill_in 'Link name', with: 'My gist'
+          fill_in 'Url', with: gist_url
+        end
+        click_on 'Save'
+      end
+
+      within "#answer-id-#{answer.id}" do
+        expect(page).to have_content 'gist for qna'
+        expect(page).to have_link 'Google', href: google_url
       end
     end
 
