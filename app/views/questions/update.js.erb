@@ -9,6 +9,10 @@ $(".question .body").html("<%= j @question.body %>");
     $(".question .files").append("<%= j render "files/file", file: file %>");
   <% end %>
 <% end %>
+<% if @question.links.present? %>
+  $(".question .links").html("");
+  $(".question .links").append("<%= j render 'links/index', resource: @question %>");
+<% end %>
 $(".question .edit-question-link").removeClass("hidden");
 $("form#edit-question-form-<%= @question.id %>").addClass("hidden");
 <% end %>

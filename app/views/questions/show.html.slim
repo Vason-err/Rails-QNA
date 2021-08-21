@@ -9,6 +9,7 @@ p = link_to "Questions", questions_path
       - @question.files.each do |file|
         = render "/files/file", file: file
 
+  p Links:
   -if @question&.links.present?
     = render 'links/index', resource: @question
 
