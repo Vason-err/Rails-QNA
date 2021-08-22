@@ -1,3 +1,6 @@
+<% if @question.links.any?(&:gist?) %>
+window.location.reload(false);
+<% else %>
 $(".edit-question-form .question-errors").html("<%= render 'shared/errors', resource: @question %>");
 
 <% if @question.errors.empty? %>
@@ -15,4 +18,5 @@ $(".question .body").html("<%= j @question.body %>");
 <% end %>
 $(".question .edit-question-link").removeClass("hidden");
 $("form#edit-question-form-<%= @question.id %>").addClass("hidden");
+<% end %>
 <% end %>

@@ -61,7 +61,7 @@ feature 'user can edit his question', %q{
         end
 
         click_on 'Save'
-
+        wait_for_ajax
         expect(page).to have_link 'Google', href: google_url
         expect(page).to have_content 'gist for qna'
       end

@@ -66,7 +66,7 @@ feature 'user can edit his answer', %q{
         end
         click_on 'Save'
       end
-
+      wait_for_ajax
       within "#answer-id-#{answer.id}" do
         expect(page).to have_content 'gist for qna'
         expect(page).to have_link 'Google', href: google_url

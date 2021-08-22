@@ -15,7 +15,7 @@ feature 'user can add links to answer', %q{
     login(user)
     visit question_path(question)
 
-    fill_in "Body", with: "Test answer"
+    fill_in 'Body', with: 'Test answer'
 
     click_on 'add link'
     within '.nested-fields:last-of-type' do
@@ -28,8 +28,8 @@ feature 'user can add links to answer', %q{
       fill_in 'Url', with: google_url
     end
 
-    click_on "Answer"
-
+    click_on 'Answer'
+    wait_for_ajax
     within '.answers' do
       expect(page).to have_content 'gist for qna'
       expect(page).to have_link 'Google', href: google_url

@@ -13,6 +13,9 @@ p = link_to "Questions", questions_path
   -if @question&.links.present?
     = render 'links/index', resource: @question
 
+  - if @question.reward
+    = render @question.reward
+
   - if user_signed_in?
     - if current_user.author_of?(@question)
       p = link_to "Edit question", "#", class: "edit-question-link", data: {question_id: @question.id}

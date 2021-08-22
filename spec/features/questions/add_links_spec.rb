@@ -29,7 +29,7 @@ feature 'user can add links to question', %q{
     end
 
     click_on 'Ask'
-
+    page.reset!
     expect(page).to have_content 'gist for qna'
     expect(page).to have_link 'Google', href: google_url
   end
