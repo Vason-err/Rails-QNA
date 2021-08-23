@@ -15,8 +15,11 @@ RSpec.describe Answer, type: :model do
   end
 
   describe '#mark_as_best' do
+    let(:user) { create(:user) }
     let(:question_with_answers) { create(:question, :with_answers) }
     let(:first_answer) { question_with_answers.answers.first }
+    let!(:reward) { create(:reward, question: question_with_answers) }
+    let(:answer) { create(:answer, question: question_with_answers, user: user) }
     let(:best_answer) { create(:answer, question: question_with_answers, best:true) }
 
     it 'select this answer best' do
@@ -29,6 +32,12 @@ RSpec.describe Answer, type: :model do
       best_answer.reload
       expect(best_answer).to_not be_best
       expect(question_with_answers.answers.last).to_not be_best
+    end
+
+    it 'assigns an award from author of the answer' do
+      expect(reward.user).to_not eq user
+      answer.mark_as_best
+      expect(reward.user).to eq user
     end
   end
 end
