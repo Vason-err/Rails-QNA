@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'user can show question and answers', %q{
+feature 'user can show question and answers', "
   In order to find the answer to the question
   As an user
   I'd like to be able to show question and answers
-} do
+" do
   shared_examples 'question and answers' do
     scenario 'tries to show question and answer' do
       visit question_path(question)
@@ -17,7 +19,7 @@ feature 'user can show question and answers', %q{
   end
 
   given(:user) { create(:user) }
-  given(:question) { create(:question)}
+  given(:question) { create(:question) }
   given!(:answers) { create_list(:answer, 3, question: question) }
 
   describe 'authenticated user' do

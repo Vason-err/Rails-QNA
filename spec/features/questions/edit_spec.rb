@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'user can edit his question', %q{
+feature 'user can edit his question', "
   In order to correct mistakes
   As an author of question
   I'd like ot be able to edit my question
-} do
+" do
   given!(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
 
@@ -36,7 +38,7 @@ feature 'user can edit his question', %q{
       within '.edit-question-form' do
         attach_file 'File', [
           "#{Rails.root}/spec/fixtures/files/text_test_file.txt",
-          "#{Rails.root}/spec/fixtures/files/image_test_file.jpeg",
+          "#{Rails.root}/spec/fixtures/files/image_test_file.jpeg"
         ]
         click_on 'Save'
       end

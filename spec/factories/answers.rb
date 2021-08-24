@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :answer do
     sequence(:body) { |n| "Answer #{n} body" }
@@ -8,7 +10,7 @@ FactoryBot.define do
     trait :invalid do
       body { nil }
     end
-    
+
     trait :with_file do
       after :create do |answer|
         answer.files.attach(
@@ -20,9 +22,7 @@ FactoryBot.define do
     end
 
     trait :best do
-      after :create do |answer|
-        answer.mark_as_best
-      end
+      after :create, &:mark_as_best
     end
   end
 end

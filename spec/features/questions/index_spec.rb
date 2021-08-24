@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'user can show questions', %q{
+feature 'user can show questions', "
   In order to find the answer to the question
   As an user
   I'd like to be able to show questions
-} do
+" do
   shared_examples 'questions list' do
     scenario 'tries to show questions' do
       visit questions_path

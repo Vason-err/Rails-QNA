@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe LinksController, type: :controller do
@@ -7,7 +9,7 @@ RSpec.describe LinksController, type: :controller do
   let!(:other_link) { create(:link) }
 
   describe 'DELETE #destroy' do
-    let(:delete_destroy) { delete :destroy, params: {id: link_id, format: :js} }
+    let(:delete_destroy) { delete :destroy, params: { id: link_id, format: :js } }
     before { login(user) }
 
     context 'author of record' do

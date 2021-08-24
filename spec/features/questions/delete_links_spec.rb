@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'User can delete links from question', %{
+feature 'User can delete links from question', %(
   In order to remove unnecessary links from my question
   As an question's author
   I'd like to be able to delete links
-} do
+) do
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
   given(:other_question) { create(:question) }
@@ -20,7 +22,7 @@ feature 'User can delete links from question', %{
   describe 'Authenticated user' do
     background { login(user) }
 
-    scenario "and author can delete links", js: true do
+    scenario 'and author can delete links', js: true do
       visit question_path(question)
 
       expect(page).to have_link 'Test link', href: 'http://foo.bar.com'

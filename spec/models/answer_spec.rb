@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
-  it { should belong_to(:user)}
+  it { should belong_to(:user) }
   it { should belong_to(:question) }
 
   it { should have_many(:links).dependent(:destroy) }
@@ -20,7 +22,7 @@ RSpec.describe Answer, type: :model do
     let(:first_answer) { question_with_answers.answers.first }
     let!(:reward) { create(:reward, question: question_with_answers) }
     let(:answer) { create(:answer, question: question_with_answers, user: user) }
-    let(:best_answer) { create(:answer, question: question_with_answers, best:true) }
+    let(:best_answer) { create(:answer, question: question_with_answers, best: true) }
 
     it 'select this answer best' do
       expect { first_answer.mark_as_best }.to change { first_answer.best }.from(false).to(true)

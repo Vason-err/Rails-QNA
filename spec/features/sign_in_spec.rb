@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'user can sign in', %q{
+feature 'user can sign in', "
   In order to ask questions
   As an unauthenticated user
   I'd like to be able to sign in
-} do
+" do
   background { visit new_user_session_path }
 
   describe 'registered user' do

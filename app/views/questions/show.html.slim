@@ -10,7 +10,7 @@ p = link_to "Questions", questions_path
         = render "/files/file", file: file
 
   p Links:
-  -if @question&.links.present?
+  -if @question.links.present?
     = render 'links/index', resource: @question
 
   - if @question.reward

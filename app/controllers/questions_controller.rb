@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class QuestionsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :update, :destroy]
-  before_action :find_question, only: [:show, :update, :destroy]
-  before_action :check_question_author, only: [:update, :destroy]
+  before_action :authenticate_user!, only: %i[new create update destroy]
+  before_action :find_question, only: %i[show update destroy]
+  before_action :check_question_author, only: %i[update destroy]
 
   def index
     @questions = Question.all
@@ -20,25 +22,26 @@ class QuestionsController < ApplicationController
     @question = current_user.questions.new(question_params)
 
     if @question.save
-      redirect_to @question, notice: "The question has been successfully created"
+      redirect_to @question, notice: 'The question has been successfully created'
     else
       render :new
     end
   end
 
   def update
-    @notice = "The question has been successfully updated" if @question.update(question_params)
+    @notice = 'The question has been successfully updated' if @question.update(question_params)
   end
 
   def destroy
-      @question.destroy
-      redirect_to questions_path, notice: "The question has been successfully deleted"
+    @question.destroy
+    redirect_to questions_path, notice: 'The question has been successfully deleted'
   end
 
   private
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [], links_attributes: [:name, :url, :_destroy], reward_attributes: %i[title file])
+    params.require(:question).permit(:title, :body, files: [], links_attributes: %i[name url _destroy],
+                                                    reward_attributes: %i[title file])
   end
 
   def find_question
@@ -46,8 +49,6 @@ class QuestionsController < ApplicationController
   end
 
   def check_question_author
-    unless current_user.author_of?(@question)
-      head(:forbidden)
-    end
+    head(:forbidden) unless current_user.author_of?(@question)
   end
 end

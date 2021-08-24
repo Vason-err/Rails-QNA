@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'User can view their rewards' do
   given(:user) { create(:user) }
-  given!(:rewards) { create_list(:reward, 3, user: user) }
+  given!(:reward) { create(:reward, user: user) }
+  given!(:other_reward) { create(:reward, user: user) }
 
   background { login(user) }
 
@@ -10,9 +13,9 @@ feature 'User can view their rewards' do
     visit rewards_path
 
     expect(page).to have_content 'Rewards list'
-    rewards.each do |reward|
-      expect(page).to have_content reward.question.title
-      expect(page).to have_content reward.title
-    end
+    expect(page).to have_content reward.question.title
+    expect(page).to have_content reward.title
+    expect(page).to have_content other_reward.question.title
+    expect(page).to have_content other_reward.title
   end
 end

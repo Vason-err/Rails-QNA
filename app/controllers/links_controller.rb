@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class LinksController < ApplicationController
-  layout :false, only: %i[destroy]
+  layout false, only: %i[destroy]
   before_action :authenticate_user!
 
   def destroy
