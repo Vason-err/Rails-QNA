@@ -1,9 +1,14 @@
-$(".new-answer-form .answer-errors").html("<%= render 'shared/errors', resource: @answer %>");
+<% if @answer.links.any?(&:gist?) %>
+window.location.reload(false); // fix partial view of answer script
+<% else %>
+  $(".new-answer-form .answer-errors").html("<%= render 'shared/errors', resource: @answer %>");
 
-<% if @answer.persisted? %>
-$(".answers").append("<%= j render @answer %>");
-$(".new-answer-form #answer_body").val("");
-$(".new-answer-form #answer_files").val("");
-$(".new-answer-form #answer_files").prop("disabled", false);
-$(".new-answer-form .direct-upload").remove();
+  <% if @answer.persisted? %>
+    $(".answers").append("<%= j render @answer %>");
+    $(".new-answer-form #answer_body").val("");
+    $(".new-answer-form #answer_files").val("");
+    $(".new-answer-form #answer_files").prop("disabled", false);
+    $(".new-answer-form .direct-upload").remove();
+    $(".new-answer-form .nested-fields").remove();
+  <% end %>
 <% end %>

@@ -1,11 +1,12 @@
+# frozen_string_literal: true
 
 require 'rails_helper'
 
-feature 'user can sign up', %q{
+feature 'user can sign up', "
   In order to ask questions
   As an unregistered user
   I'd like to be able to sign up
-} do
+" do
   background { visit new_user_registration_path }
 
   describe 'unregistered user' do

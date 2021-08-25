@@ -1,0 +1,11 @@
+div id='link-#{link.id}'
+  - if link.gist?
+    p
+      script src="#{link.url}.js"
+    - button_caption = 'Delete gist'
+  - else
+    p = link_to link.name, link.url
+    - button_caption = 'Delete link'
+
+  - if current_user&.author_of?(link.linkable)
+    p = link_to button_caption, link, method: :delete, remote: true

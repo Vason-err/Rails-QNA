@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
@@ -49,19 +51,19 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'when the user is not the author' do
       it 'returns forbidden' do
-        patch :update, params: {id: other_answer, format: :js}
+        patch :update, params: { id: other_answer, format: :js }
         expect(response).to be_forbidden
       end
     end
   end
 
   describe 'DELETE #destroy' do
-    let(:delete_destroy) { delete :destroy, params: { id: answer.id }, format: :js}
+    let(:delete_destroy) { delete :destroy, params: { id: answer.id }, format: :js }
 
     let!(:answer) { create(:answer, user: user, question: question) }
 
     it 'should delete answer' do
-      expect { delete_destroy}.to change(question.answers, :count).by(-1)
+      expect { delete_destroy }.to change(question.answers, :count).by(-1)
     end
 
     context 'when the user is not the author' do

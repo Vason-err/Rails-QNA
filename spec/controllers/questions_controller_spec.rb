@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
@@ -109,7 +111,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     describe 'DELETE #destroy' do
-
       let(:delete_destroy) { delete :destroy, params: { id: question.id } }
 
       let!(:question) { create(:question, user: user) }
@@ -136,6 +137,5 @@ RSpec.describe QuestionsController, type: :controller do
         end
       end
     end
-
   end
 end

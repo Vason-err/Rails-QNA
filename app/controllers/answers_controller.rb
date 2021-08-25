@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_question, only: [:create, :index]
-  before_action :find_answer, only: [:update, :destroy, :mark_as_best]
-  before_action :check_answer_author, only: [:update, :destroy]
+  before_action :find_question, only: %i[create index]
+  before_action :find_answer, only: %i[update destroy mark_as_best]
+  before_action :check_answer_author, only: %i[update destroy]
 
   def index
     @answers = @question.answers
@@ -13,19 +15,19 @@ class AnswersController < ApplicationController
     @answer.user = current_user
 
     if @answer.save
-      @notice = "The answer has been successfully created"
+      @notice = 'The answer has been successfully created'
     else
-      @alert = "The answer has not been created"
+      @alert = 'The answer has not been created'
     end
   end
 
   def update
-    @notice = "The answer has been successfully updated" if @answer.update(answer_params)
+    @notice = 'The answer has been successfully updated' if @answer.update(answer_params)
   end
 
   def destroy
     @answer.destroy
-    @notice = "The answer has been successfully deleted"
+    @notice = 'The answer has been successfully deleted'
   end
 
   def mark_as_best
@@ -36,7 +38,7 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, files: [])
+    params.require(:answer).permit(:body, files: [], links_attributes: %i[name url _destroy])
   end
 
   def find_question
@@ -48,8 +50,6 @@ class AnswersController < ApplicationController
   end
 
   def check_answer_author
-    unless current_user.author_of?(@answer)
-      head(:forbidden)
-    end
+    head(:forbidden) unless current_user.author_of?(@answer)
   end
 end

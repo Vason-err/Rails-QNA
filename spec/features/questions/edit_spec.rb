@@ -1,15 +1,19 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'user can edit his question', %q{
+feature 'user can edit his question', "
   In order to correct mistakes
   As an author of question
   I'd like ot be able to edit my question
-} do
+" do
   given!(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
 
   describe 'authenticated user', js: true do
     background { login(user) }
+    given(:google_url) { 'https://www.google.com/' }
+    given(:gist_url) { 'https://gist.github.com/Vason-err/ebf797de8d60c832da5a00023a9ea20f' }
 
     background { visit question_path(question) }
 
@@ -34,13 +38,35 @@ feature 'user can edit his question', %q{
       within '.edit-question-form' do
         attach_file 'File', [
           "#{Rails.root}/spec/fixtures/files/text_test_file.txt",
-          "#{Rails.root}/spec/fixtures/files/image_test_file.jpeg",
+          "#{Rails.root}/spec/fixtures/files/image_test_file.jpeg"
         ]
         click_on 'Save'
       end
 
       expect(page).to have_link 'text_test_file.txt'
       expect(page).to have_link 'image_test_file.jpeg'
+    end
+
+    scenario 'can add links' do
+      click_on 'Edit question'
+
+      within '.edit-question-form' do
+        click_on 'add link'
+        within '.nested-fields:last-of-type' do
+          fill_in 'Link name', with: 'Google'
+          fill_in 'Url', with: google_url
+        end
+        click_on 'add link'
+        within '.nested-fields:last-of-type' do
+          fill_in 'Link name', with: 'My gist'
+          fill_in 'Url', with: gist_url
+        end
+
+        click_on 'Save'
+        wait_for_ajax
+        expect(page).to have_link 'Google', href: google_url
+        expect(page).to have_content 'gist for qna'
+      end
     end
 
     scenario 'edits his question with errors' do
