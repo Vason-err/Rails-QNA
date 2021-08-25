@@ -8,8 +8,8 @@ feature 'user can mark answer as best', "
   I'd like ot be able to mark answer as best
 " do
   given!(:user) { create(:user) }
-  given!(:question) { create(:question, user: user) }
-  given!(:answer) { create(:answer, question: question) }
+  given!(:question) { create(:question, :with_answers, user: user) }
+
 
   describe 'authenticated user', js: true do
     background { login(user) }
@@ -30,7 +30,7 @@ feature 'user can mark answer as best', "
     end
 
     context "when user is not question's author" do
-      given!(:question) { create(:question) }
+      given!(:question) { create(:question, :with_answers) }
 
       scenario 'tries to mark answer as best' do
         within '.answers' do
