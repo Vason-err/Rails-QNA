@@ -16,4 +16,20 @@ Rails.application.routes.draw do
   resources :files, only: [:destroy]
   resources :links, only: :destroy
   resources :rewards, only: :index
+
+  concern :voteable do |options|
+    member do
+      resources :votes, { only: [:create] }.merge(options)
+    end
+  end
+
+  resources :questions, only: [], param: :voteable_id do
+    concerns :voteable, defaults: { voteable_type: 'question' }, as: :question_votes
+  end
+
+  resources :answers, only: [], param: :voteable_id do
+    concerns :voteable, defaults: { voteable_type: 'answer' }, as: :answer_votes
+  end
+
+  resources :votes, only: [:destroy]
 end

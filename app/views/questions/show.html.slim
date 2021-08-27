@@ -4,6 +4,8 @@ p = link_to "Questions", questions_path
   h1.title = @question.title
   p.body = @question.body
 
+  = render "/votes/vote_block", vote: @vote, voteable: @question
+
   .files
     - if @question.files.attached?
       - @question.files.each do |file|

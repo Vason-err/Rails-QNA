@@ -12,6 +12,7 @@ import "./answers"
 import "./questions"
 import "./direct_uploads"
 import "@nathanvda/cocoon"
+import "./votes"
 
 const jQuery = require("jquery");
 // import jQuery from "jquery";

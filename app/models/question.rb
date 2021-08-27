@@ -7,10 +7,8 @@ class Question < ApplicationRecord
   belongs_to :user
 
   has_many :answers, -> { order('best DESC, created_at') }, dependent: :destroy
-  has_many :links, dependent: :destroy, as: :linkable
   has_many_attached :files
   has_one :reward, dependent: :destroy
-  has_many :votes, dependent: :destroy
 
   validates :title, :body, presence: true
 
