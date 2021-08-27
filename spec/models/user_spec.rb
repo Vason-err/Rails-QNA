@@ -25,4 +25,18 @@ RSpec.describe User, type: :model do
       it { expect(user).not_to be_author_of(resource) }
     end
   end
+
+  describe '#vote_by' do
+    let!(:user) { create(:user) }
+    let!(:answer) { create(:answer) }
+    let!(:vote) { create(:vote, user: user, voteable: answer) }
+
+    it { expect(user.vote_by(answer)).to eq(vote) }
+
+    context 'when user has not votes' do
+      let!(:vote) { create(:vote, voteable: answer) }
+
+      it { expect(user.vote_by(answer)).to be_nil }
+    end
+  end
 end
