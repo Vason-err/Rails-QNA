@@ -6,6 +6,7 @@ RSpec.describe User, type: :model do
   it { should have_many(:questions).dependent(:destroy) }
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:rewards).dependent(:destroy) }
+  it { should have_many(:votes).dependent(:destroy) }
 
   it { should validate_presence_of(:email) }
   it { should validate_presence_of(:password) }
@@ -22,6 +23,20 @@ RSpec.describe User, type: :model do
       let(:user_id) { second_user.id }
 
       it { expect(user).not_to be_author_of(resource) }
+    end
+  end
+
+  describe '#vote_by' do
+    let!(:user) { create(:user) }
+    let!(:answer) { create(:answer) }
+    let!(:vote) { create(:vote, user: user, voteable: answer) }
+
+    it { expect(user.vote_by(answer)).to eq(vote) }
+
+    context 'when user has not votes' do
+      let!(:vote) { create(:vote, voteable: answer) }
+
+      it { expect(user.vote_by(answer)).to be_nil }
     end
   end
 end

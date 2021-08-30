@@ -1,0 +1,15 @@
+.vote-block
+  p Vote
+  .vote-actions
+    - if user_signed_in? && !current_user&.author_of?(voteable)
+      - if vote.persisted?
+        .vote-result
+          = vote.value.positive? ? "Plus" : "Minus"
+          p = link_to "Delete", vote_path(vote), class: "delete-vote", remote: true, method: :delete
+      - else
+        .vote-links
+          p = link_to "Plus", polymorphic_path([voteable, vote], value: 1), class: "vote-link", remote: true, method: :post
+          p = link_to "Minus", polymorphic_path([voteable, vote], value: -1), class: "vote-link", remote: true, method: :post
+  p
+    | Rating:
+    span.vote-rating #{voteable.vote_rating}

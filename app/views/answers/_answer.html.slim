@@ -2,6 +2,8 @@
   .answer id='answer-id-#{answer.id}' class=('best' if answer.best)
     p = answer.body
 
+    = render "/votes/vote_block", vote: (current_user&.vote_by(answer) || answer.votes.new), voteable: answer
+
     - if answer.files.attached?
       - answer.files.each do |file|
         = render '/files/file', file: file
