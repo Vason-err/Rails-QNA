@@ -77,6 +77,32 @@ feature 'user can create question', "
         expect(page).to have_content "Body can't be blank"
       end
     end
+
+    context 'multiple sessions', js: true do
+      scenario "question appears on another user's page" do
+        Capybara.using_session('user') do
+          login(user)
+          visit new_question_path
+        end
+
+        Capybara.using_session('guest') do
+          visit questions_path
+        end
+
+        Capybara.using_session('user') do
+          fill_in 'Title', with: 'Question title'
+          fill_in 'Body', with: 'Question body'
+          click_on 'Ask'
+
+          expect(page).to have_content 'Question title'
+          expect(page).to have_content 'Question body'
+        end
+
+        Capybara.using_session('guest') do
+          expect(page).to have_content 'Question title'
+        end
+      end
+    end
   end
 
   describe 'unauthenticated user' do

@@ -70,6 +70,41 @@ feature 'user can create answer', "
 
       expect(page).to have_content "Body can't be blank"
     end
+
+    context 'multiple sessions', js: true do
+      given(:author) { create(:user) }
+
+      scenario "answer appears on another user's page" do
+        Capybara.using_session('user') do
+          login(user)
+          visit question_path(question)
+        end
+
+        Capybara.using_session('author') do
+          login(author)
+          visit question_path(question)
+
+          fill_in 'Body', with: 'Answer body'
+          click_on 'Answer'
+
+          expect(page).to have_content 'The answer has been successfully created'
+
+          within '.answers' do
+            expect(page).to have_content 'Answer body'
+            expect(page).to have_content 'Edit answer'
+            expect(page).to have_content 'Delete answer'
+          end
+        end
+
+        Capybara.using_session('user') do
+          within '.answers' do
+            expect(page).to have_content 'Answer body'
+            expect(page).not_to have_content 'Edit answer'
+            expect(page).not_to have_content 'Delete answer'
+          end
+        end
+      end
+    end
   end
 
   describe 'unauthenticated user' do
