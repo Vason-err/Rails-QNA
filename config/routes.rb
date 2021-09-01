@@ -32,4 +32,6 @@ Rails.application.routes.draw do
   end
 
   resources :votes, only: [:destroy]
+
+  mount ActionCable.server => '/cable'
 end

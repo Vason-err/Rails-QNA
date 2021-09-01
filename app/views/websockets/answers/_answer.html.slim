@@ -1,0 +1,10 @@
+.answer id="answer-id-#{answer.id}"
+  p = answer.body
+
+  = render "/websockets/shared/votes/vote_block", vote: answer.votes.new, voteable: answer
+
+  .files
+    = render "/websockets/shared/files/file_block", files: answer.files
+
+  .links
+    = render "/websockets/shared/links/links_block", links: answer.links

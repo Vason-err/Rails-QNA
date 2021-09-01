@@ -1,0 +1,4 @@
+- if files.attached?
+  p Files:
+  - files.each do |file|
+    = render '/files/file', file: file

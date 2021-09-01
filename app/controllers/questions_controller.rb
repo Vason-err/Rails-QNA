@@ -5,6 +5,8 @@ class QuestionsController < ApplicationController
   before_action :find_question, only: %i[show update destroy]
   before_action :check_question_author, only: %i[update destroy]
 
+  after_action :publish_question, only: [:create]
+
   def index
     @questions = Question.all
   end
@@ -12,6 +14,7 @@ class QuestionsController < ApplicationController
   def show
     @answer = @question.answers.new
     @vote = current_user&.vote_by(@question) || @question.votes.new
+    set_gon
   end
 
   def new
@@ -51,5 +54,24 @@ class QuestionsController < ApplicationController
 
   def check_question_author
     head(:forbidden) unless current_user.author_of?(@question)
+  end
+
+  def set_gon
+    gon.question_id = @question.id
+    gon.current_user_id = current_user&.id
+  end
+
+  def publish_question
+    return if @question.errors.present?
+
+    ActionCable.server.broadcast(
+      'questions',
+      {
+        template: render_template(
+          partial: 'websockets/questions/list_item',
+          locals: { question: @question }
+        )
+      }
+    )
   end
 end
