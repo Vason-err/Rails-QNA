@@ -31,7 +31,16 @@ p = link_to "Questions", questions_path
     p New answer
     .new-answer-form
       .answer-errors
-      = render "/answers/form"
+      = render '/answers/form'
+
+    p New comment
+      .new-comment-form
+        .comment-errors
+        = render '/comments/form', commentable: @question
+
+    p Comments
+    .question-comments
+      = render @question.comments.order(created_at: :asc)
 
 p Answers
 .answers

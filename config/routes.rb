@@ -33,5 +33,19 @@ Rails.application.routes.draw do
 
   resources :votes, only: [:destroy]
 
+  concern :commentable do |options|
+    member do
+      resources :comments, { only: [:create] }.merge(options)
+    end
+  end
+
+  resources :questions, only: [], param: commentable_id do
+    concerns :commentable, defaults: { commentable_type: 'question'}, as: :question_comments
+  end
+
+  resources :answers, only: [], param: commentable_id do
+    concerns :commentable, defaults: { commentable_type: 'answer' }, as: :answer_comments
+  end
+
   mount ActionCable.server => '/cable'
 end
