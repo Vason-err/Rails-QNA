@@ -1,24 +1,5 @@
 $(document).on('turbolinks:load', function() {
     onAjaxCommentForm($('.new-comment-form form'));
-
-    App.cable.subscriptions.create('CommentsChannel', {
-        connected() {
-            if (gon.question_id) {
-                this.perform('follow', { question_id: gon.question_id })
-            }
-        },
-        received(comment) {
-            if (comment.author_id !== gon.current_user_id) {
-                const comment_template = comment.template;
-
-                if (comment.answer_id) {
-                    $(`#answer-id-${comment.answer_id}`).find('.answer-comments').append(comment_template);
-                } else {
-                    $('.question-comments').append(comment_template);
-                }
-            }
-        }
-    });
 });
 
 function onAjaxCommentForm(elem) {

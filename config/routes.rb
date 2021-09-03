@@ -3,7 +3,9 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: {
     sessions: 'user/sessions'
-  }
+  } do
+    get '/users/sign_out' => 'devise/sessions#destroy'
+  end
 
   resources :questions, except: [:edit] do
     resources :answers, only: [:create, :update, :destroy], shallow: true do
@@ -39,11 +41,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :questions, only: [], param: commentable_id do
-    concerns :commentable, defaults: { commentable_type: 'question'}, as: :question_comments
+  resources :questions, only: [], param: :commentable_id do
+    concerns :commentable, defaults: { commentable_type: 'question' }, as: :question_comments
   end
 
-  resources :answers, only: [], param: commentable_id do
+  resources :answers, only: [], param: :commentable_id do
     concerns :commentable, defaults: { commentable_type: 'answer' }, as: :answer_comments
   end
 

@@ -34,14 +34,14 @@ p = link_to "Questions", questions_path
       = render '/answers/form'
 
     p New comment
-      .new-comment-form
-        .comment-errors
-        = render '/comments/form', commentable: @question
-
-    p Comments
-    .question-comments
-      = render @question.comments.order(created_at: :asc)
+    .new-comment-form
+      .comment-errors
+      = render '/comments/form', commentable: @question
 
 p Answers
 .answers
   = render @question.answers
+
+p Comments
+.question-comments
+  = render @question.comments.order(created_at: :asc)

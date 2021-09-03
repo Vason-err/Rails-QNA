@@ -25,10 +25,10 @@
         p = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
 
       p New comment
-        .new-comment-form
-          .comment-errors
-           = render '/comments/form', commentable: answer
+      .new-comment-form
+        .comment-errors
+        = render '/comments/form', commentable: answer
 
-      p Comments
-        .answer-comments
-         = render answer.comments.order(created_at: :asc)
+    p Comments
+    .answer-comments
+      = render answer.comments.order(created_at: :asc)

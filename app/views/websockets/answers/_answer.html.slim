@@ -1,10 +1,14 @@
 .answer id="answer-id-#{answer.id}"
   p = answer.body
 
-  = render "/websockets/shared/votes/vote_block", vote: answer.votes.new, voteable: answer
+= render "websockets/shared/votes/vote_block", vote: answer.votes.new, voteable: answer
 
-  .files
-    = render "/websockets/shared/files/file_block", files: answer.files
+    - if answer.files.attached?
+      - answer.files.each do |file|
+        = render '/files/file', file: file
 
-  .links
-    = render "/websockets/shared/links/links_block", links: answer.links
+    - if answer&.links.present?
+      = render 'links/index', resource: answer
+
+    p Comments
+    .answer-comments
