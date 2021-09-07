@@ -19,6 +19,7 @@ class AnswersController < ApplicationController
     else
       @alert = 'The answer has not been created'
     end
+    publish_answer
   end
 
   def update
@@ -51,5 +52,27 @@ class AnswersController < ApplicationController
 
   def check_answer_author
     head(:forbidden) unless current_user.author_of?(@answer)
+  end
+
+  def publish_answer
+    return if @answer.errors.present?
+
+    ActionCable.server.broadcast(
+      "questions/#{@answer.question_id}/answers",
+      {
+        id: @answer.id,
+        author_id: @answer.user_id,
+        templates: {
+          answer: render_template(
+            partial: 'websockets/answers/answer',
+            locals: { answer: @answer }
+          ),
+          vote_links: render_template(
+            partial: 'websockets/shared/votes/vote_links',
+            locals: { voteable: @answer, vote: @answer.votes.new }
+          )
+        }
+      }
+    )
   end
 end

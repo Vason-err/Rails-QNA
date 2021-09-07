@@ -1,0 +1,3 @@
+.vote-links
+  p = link_to "Plus", polymorphic_path([voteable, vote], value: 1), class: "vote-link", remote: true, method: :post
+  p = link_to "Minus", polymorphic_path([voteable, vote], value: -1), class: "vote-link", remote: true, method: :post

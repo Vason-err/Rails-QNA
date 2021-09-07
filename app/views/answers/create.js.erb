@@ -10,5 +10,6 @@ window.location.reload(false); // fix partial view of answer script
     $(".new-answer-form #answer_files").prop("disabled", false);
     $(".new-answer-form .direct-upload").remove();
     $(".new-answer-form .nested-fields").remove();
+    onAjaxCommentForm($("<%= "#answer-id-#{@answer.id} .new-comment-form form" %>"));
   <% end %>
 <% end %>

@@ -1,0 +1,6 @@
+= form_with model: [commentable, Comment.new] do |f|
+  p
+    = f.label :text
+    = f.text_field :text
+  p
+    = f.submit 'Comment'
