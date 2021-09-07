@@ -5,7 +5,6 @@ class QuestionsController < ApplicationController
   before_action :find_question, only: %i[show update destroy]
   before_action :check_question_author, only: %i[update destroy]
 
-  after_action :publish_question, only: [:create]
 
   def index
     @questions = Question.all
@@ -30,6 +29,7 @@ class QuestionsController < ApplicationController
     else
       render :new
     end
+    publish_question
   end
 
   def update

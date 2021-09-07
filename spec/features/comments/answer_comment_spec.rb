@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'user can add comment to answer' do
@@ -9,32 +11,30 @@ feature 'user can add comment to answer' do
     background { login(user) }
     background { visit question_path(question) }
 
-    context 'try create comment' do
-      scenario do
+    scenario 'try create comment' do
+      within "#answer-id-#{answer.id}" do
+        expect(page).to have_content 'New comment'
+
+        within '.new-comment-form' do
+          fill_in 'Text', with: 'Comment text'
+          click_on 'Comment'
+        end
+
+        within '.answer-comments' do
+          expect(page).to have_content 'Comment text'
+        end
+      end
+    end
+
+    context 'with invalid params' do
+      scenario 'tries to create invalid comment' do
         within "#answer-id-#{answer.id}" do
           expect(page).to have_content 'New comment'
 
           within '.new-comment-form' do
-            fill_in 'Text', with: 'Comment text'
             click_on 'Comment'
-          end
 
-          within '.answer-comments' do
-            expect(page).to have_content 'Comment text'
-          end
-        end
-      end
-
-      context 'with invalid params' do
-        scenario  do
-          within "#answer-id-#{answer.id}" do
-            expect(page).to have_content 'New comment'
-
-            within '.new-comment-form' do
-              click_on 'Comment'
-
-              expect(page).to have_content "Text can't be blank"
-            end
+            expect(page).to have_content "Text can't be blank"
           end
         end
       end
@@ -51,7 +51,7 @@ feature 'user can add comment to answer' do
     end
   end
 
-  context 'multiple sessions', js: true do
+  describe 'multiple sessions', js: true do
     scenario "comment appears on another user's page" do
       Capybara.using_session('user') do
         login(user)

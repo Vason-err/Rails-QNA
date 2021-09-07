@@ -6,8 +6,6 @@ class AnswersController < ApplicationController
   before_action :find_answer, only: %i[update destroy mark_as_best]
   before_action :check_answer_author, only: %i[update destroy]
 
-  after_action :publish_answer, only: [:create]
-
   def index
     @answers = @question.answers
   end
@@ -21,6 +19,7 @@ class AnswersController < ApplicationController
     else
       @alert = 'The answer has not been created'
     end
+    publish_answer
   end
 
   def update

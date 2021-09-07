@@ -8,22 +8,21 @@ feature 'user can add comment to question' do
     background { login(user) }
     background { visit question_path(question) }
 
-    context 'try create comment' do
-      scenario  do
-        expect(page).to have_content 'New comment'
+    scenario 'try create comment' do
+      expect(page).to have_content 'New comment'
 
-        within '.new-comment-form' do
-          fill_in 'Text', with: 'Comment text'
-          click_on 'Comment'
-        end
-
-        within '.question-comments' do
-          expect(page).to have_content 'Comment text'
-        end
+      within '.new-comment-form' do
+        fill_in 'Text', with: 'Comment text'
+        click_on 'Comment'
       end
 
-      context 'with invalid params' do
-        scenario  do
+      within '.question-comments' do
+        expect(page).to have_content 'Comment text'
+      end
+    end
+
+    context 'with invalid params' do
+      scenario 'tries to create invalid comment' do
           expect(page).to have_content 'New comment'
 
           within '.new-comment-form' do
@@ -31,9 +30,8 @@ feature 'user can add comment to question' do
 
             expect(page).to have_content "Text can't be blank"
           end
-        end
+          end
       end
-    end
   end
 
   describe 'unauthenticated user', js: true do
