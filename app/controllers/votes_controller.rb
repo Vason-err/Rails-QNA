@@ -1,8 +1,10 @@
 class VotesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_voteable, only: :create
 
   def create
+    set_voteable
+    authorize! :create_vote, @voteable
+
     vote = @voteable.votes.new(user: current_user, value: params[:value])
 
     if vote.save
@@ -13,14 +15,10 @@ class VotesController < ApplicationController
   end
 
   def destroy
-    vote = Vote.find(params[:id])
-
-    if current_user.author_of?(vote)
-      vote.destroy
-      render json: vote
-    else
-      render json: { errors: ["You can't delete the vote, because you aren't its author"] }, status: :forbidden
-    end
+    find_vote
+    authorize! :destroy, @vote
+    @vote.destroy!
+    render json: @vote
   end
 
   private
@@ -31,5 +29,9 @@ class VotesController < ApplicationController
 
   def voteable_type
     params[:voteable_type]
+  end
+
+  def find_vote
+    @vote = Vote.find(params[:id])
   end
 end

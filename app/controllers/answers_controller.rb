@@ -4,7 +4,8 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_question, only: %i[create index]
   before_action :find_answer, only: %i[update destroy mark_as_best]
-  before_action :check_answer_author, only: %i[update destroy]
+
+  authorize_resource
 
   def index
     @answers = @question.answers
@@ -32,7 +33,6 @@ class AnswersController < ApplicationController
   end
 
   def mark_as_best
-    render status: :forbidden unless current_user.author_of?(@answer.question)
     @answer.mark_as_best
   end
 
@@ -48,10 +48,6 @@ class AnswersController < ApplicationController
 
   def find_answer
     @answer = Answer.with_attached_files.find(params[:id])
-  end
-
-  def check_answer_author
-    head(:forbidden) unless current_user.author_of?(@answer)
   end
 
   def publish_answer

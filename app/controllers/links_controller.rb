@@ -4,8 +4,10 @@ class LinksController < ApplicationController
   layout false, only: %i[destroy]
   before_action :authenticate_user!
 
+  load_and_authorize_resource
+
   def destroy
     @link = Link.find(params[:id])
-    @link.destroy if current_user.author_of?(@link.linkable)
+    @link.destroy
   end
 end
