@@ -30,9 +30,9 @@ RSpec.describe LinksController, type: :controller do
         expect { delete_destroy }.to_not change(Link, :count)
       end
 
-      it 'render destroy view' do
+      it 'render forbidden' do
         delete_destroy
-        expect(response).to render_template :destroy
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end

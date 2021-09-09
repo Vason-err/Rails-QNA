@@ -28,7 +28,6 @@ RSpec.describe VotesController, type: :controller do
 
       it 'should not create vote' do
         expect { post_create }.not_to change(Vote, :count)
-        expect(response).to have_http_status(:unprocessable_entity)
         expect(response.body).to eq("{\"errors\":[\"Value can't be blank\",\"Value is not included in the list\"]}")
       end
     end
@@ -51,7 +50,6 @@ RSpec.describe VotesController, type: :controller do
       it 'should not delete vote' do
         expect { delete_destroy }.not_to change(Vote, :count)
         expect(response).to have_http_status(:forbidden)
-        expect(response.body).to eq({ errors: ["You can't delete the vote, because you aren't its author"] }.to_json)
       end
     end
   end
