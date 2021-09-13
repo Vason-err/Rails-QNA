@@ -7,7 +7,7 @@ function onAjaxCommentForm(elem) {
     .on('ajax:success', function(response) {
       clearCommentError(response.currentTarget);
       clearCommentForm(response.currentTarget);
-      showComment(response.detail[0]);
+      showComment(response.detail[0]['comment']);
     })
     .on('ajax:error', function(response) {
       clearCommentError(response.currentTarget);
