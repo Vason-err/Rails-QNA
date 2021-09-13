@@ -5,6 +5,7 @@ p = link_to "Questions", questions_path
   p.body = @question.body
 
   = render "/votes/vote_block", vote: @vote, voteable: @question
+  = render "/votes/vote_rating", vote: @vote, voteable: @question
 
   .files
     - if @question.files.attached?
@@ -19,13 +20,13 @@ p = link_to "Questions", questions_path
     = render @question.reward
 
   - if user_signed_in?
-    - if current_user.author_of?(@question)
+    - if can?(:update, @question)
       p = link_to "Edit question", "#", class: "edit-question-link", data: {question_id: @question.id}
 
       .edit-question-form
         .question-errors
         = render "/questions/edit_form"
-
+    - if can?(:destroy, @question)
       p = link_to "Delete question", question_path(@question), method: :delete
 
     p New answer

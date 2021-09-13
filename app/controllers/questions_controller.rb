@@ -3,8 +3,8 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, only: %i[new create update destroy]
   before_action :find_question, only: %i[show update destroy]
-  before_action :check_question_author, only: %i[update destroy]
 
+  authorize_resource
 
   def index
     @questions = Question.all
@@ -50,10 +50,6 @@ class QuestionsController < ApplicationController
 
   def find_question
     @question = Question.with_attached_files.find(params[:id])
-  end
-
-  def check_question_author
-    head(:forbidden) unless current_user.author_of?(@question)
   end
 
   def set_gon
