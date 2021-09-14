@@ -10,7 +10,7 @@ module ApiHelper
 
   def do_request(method, path, options = {})
     headers = request_headers.merge(options[:headers] || {})
-    send(method, path, options.merge(headers: headers))
+    send method, path, options.merge(headers: headers)
   end
 
   def authorized_request_params(user_id)
