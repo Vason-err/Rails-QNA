@@ -50,5 +50,13 @@ Rails.application.routes.draw do
     concerns :commentable, defaults: { commentable_type: 'answer' }, as: :answer_comments
   end
 
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [:index] do
+        get :me, on: :collection
+      end
+    end
+  end
+
   mount ActionCable.server => '/cable'
 end
