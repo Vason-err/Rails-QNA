@@ -55,6 +55,10 @@ Rails.application.routes.draw do
       resources :profiles, only: [:index] do
         get :me, on: :collection
       end
+
+      resources :questions, except: [:new, :edit] do
+        resources :answers, except: [:new, :edit], shallow: true
+      end
     end
   end
 
