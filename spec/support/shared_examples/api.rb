@@ -2,12 +2,12 @@ shared_examples_for 'API Unauthorizable' do
   context 'unauthorized' do
     it 'returns 401 status if there is no access_token' do
       do_request(method, api_path)
-      expect(response.status).to eq 401
+      expect(response.status).to be_unauthorized
     end
 
     it 'returns 401 status if access_token is invalid' do
       do_request(method, api_path, params: {access_token: '1234'})
-      expect(response.status).to eq 401
+      expect(response.status).to eq be_unauthorized
     end
   end
 end
