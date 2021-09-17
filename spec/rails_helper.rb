@@ -41,6 +41,7 @@ RSpec.configure do |config|
   config.include ControllerHelper, type: :controller
   config.include FeatureHelper, type: :feature
   config.include WaitForAjax, type: :feature
+  config.include ApiHelper, type: :request
 
   config.extend WithModel
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures

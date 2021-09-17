@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   root to: "home#index"
 
   devise_for :users, controllers: {
@@ -47,6 +48,18 @@ Rails.application.routes.draw do
 
   resources :answers, only: [], param: :commentable_id do
     concerns :commentable, defaults: { commentable_type: 'answer' }, as: :answer_comments
+  end
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [:index] do
+        get :me, on: :collection
+      end
+
+      resources :questions, except: [:new, :edit] do
+        resources :answers, except: [:new, :edit], shallow: true
+      end
+    end
   end
 
   mount ActionCable.server => '/cable'
