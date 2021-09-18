@@ -27,7 +27,7 @@ RSpec.describe Question, type: :model do
   describe '#subscribe_author' do
     it "create subscription of author to question after create" do
       question.save
-      expect(question.author).to be_subscribed(question)
+      expect(question.user).to be_subscribed(question)
     end
   end
 end

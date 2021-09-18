@@ -4,7 +4,7 @@ RSpec.describe NotificationService do
   describe '#new_answer' do
     let!(:user) { create :user }
     let(:question) { create :question }
-    let(:question_owner) { question.author }
+    let(:question_owner) { question.user }
 
     let(:answer) { create :answer, question: question }
 

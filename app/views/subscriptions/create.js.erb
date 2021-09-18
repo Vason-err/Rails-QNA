@@ -1,3 +1,4 @@
-<% unless @subscription.persisted? %>
-$(".subscription").html('<%= link_to "Subscribe", question_subscription_path(question_id: @subscription.question_id), method: :post, remote: true %>')
+<% if @subscription.persisted? %>
+$(".subscription").html('You are subscribed to this question')
+$(".subscription").append('<%= link_to "Unsubscribe", question_subscription_path(question_id: @subscription.question_id), method: :delete, remote: true %>')
 <% end %>

@@ -20,9 +20,9 @@ class Answer < ApplicationRecord
       question.reward&.update!(user_id: user_id)
       update!(best: true)
     end
+  end
 
-    def send_notification
-      NotificationService.new.new_answer(self)
-    end
+  def send_notification
+    NotificationService.new.new_answer(self)
   end
 end

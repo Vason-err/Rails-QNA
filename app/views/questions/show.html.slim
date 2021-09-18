@@ -20,7 +20,7 @@ p = link_to "Questions", questions_path
     = render @question.reward
 
   - if signed_in?
-    = render 'subscriptions/subscription', question: question
+    = render 'subscriptions/subscription', question: @question
 
   - if user_signed_in?
     - if can?(:update, @question)
