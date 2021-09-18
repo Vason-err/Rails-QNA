@@ -19,6 +19,9 @@ p = link_to "Questions", questions_path
   - if @question.reward
     = render @question.reward
 
+  - if signed_in?
+    = render 'subscriptions/subscription', question: @question
+
   - if user_signed_in?
     - if can?(:update, @question)
       p = link_to "Edit question", "#", class: "edit-question-link", data: {question_id: @question.id}
