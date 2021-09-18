@@ -1,6 +1,8 @@
 class SubscriptionsController < ApplicationController
   before_action :authenticate_user!
 
+  authorize_resource
+
   def create
     @subscription = current_user.subscriptions.find_or_create_by(question: question)
   end
