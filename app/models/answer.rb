@@ -10,6 +10,8 @@ class Answer < ApplicationRecord
 
   has_many_attached :files
 
+  after_create :send_notification
+
   validates :body, presence: true
 
   def mark_as_best
@@ -17,6 +19,10 @@ class Answer < ApplicationRecord
       question.answers.update_all(best: false)
       question.reward&.update!(user_id: user_id)
       update!(best: true)
+    end
+
+    def send_notification
+      NotificationService.new.new_answer(self)
     end
   end
 end
